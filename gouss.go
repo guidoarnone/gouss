@@ -116,9 +116,6 @@ func userInputToString(inputReader io.Reader) [][]string {
 	//Concurrently separate each line using a blank space as delimiter
 	var matrix [][]string
 	var ch = make(chan []string)
-	var splitLine = func(l string, ch chan []string) {
-		ch <- strings.Split(l, " ")
-	}
 
 	for _, line := range lines {
 		go splitLine(line, ch)
@@ -129,6 +126,21 @@ func userInputToString(inputReader io.Reader) [][]string {
 	}
 
 	return matrix
+}
+
+/*
+ * Line splitter.
+ */
+
+func splitLine(l string, ch chan []string) {
+	var split []string
+	rawSplit := strings.Split(l, "")
+	for _, s := range rawSplit {
+		if s[0] != ' ' {
+			split = append(split, s)
+		}
+	}
+	ch <- split
 }
 
 /*
