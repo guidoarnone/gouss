@@ -44,14 +44,7 @@ func main() {
 	matrix, err := parser.ParseToRationalMatrix(stringMatrix)
 	exitProcessIfError(err, -1)
 	
-	matrix = append(matrix, nil) //test
-	//test
-	for index, _ := range stringMatrix {
-		for _, subvalue := range stringMatrix[index] {
-			output.Write([]byte(subvalue+" "))
-		}
-		output.Write([]byte("\n"))
-	}
+	output.Write(matrix.Bytes())
 
 }
 
@@ -143,7 +136,7 @@ func userInputToString(inputReader io.Reader) [][]string {
 
 func splitLine(l string, ch chan []string) {
 	var split []string
-	rawSplit := strings.Split(l, "")
+	rawSplit := strings.Split(l, " ")
 	for _, s := range rawSplit {
 		if s[0] != ' ' {
 			split = append(split, s)
