@@ -1,5 +1,9 @@
 package main
 
+/*
+ * ------ Imported packages ------
+ */
+
 import (
 	"fmt"
 	"os"
@@ -34,8 +38,13 @@ func main() {
 
 	input, output := resolveFileIO(fileConfiguration)
 	
+	//Format input into string matrix
 	stringMatrix := userInputToString(input)
+	//Parse string matrix into a rational numbers matrix
+	matrix, err := parser.ParseToRationalMatrix(stringMatrix)
+	exitProcessIfError(err, -1)
 	
+	matrix = append(matrix, nil) //test
 	//test
 	for index, _ := range stringMatrix {
 		for _, subvalue := range stringMatrix[index] {

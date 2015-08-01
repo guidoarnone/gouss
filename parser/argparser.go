@@ -1,4 +1,5 @@
 package parser
+
 /*
  * ------ Imported packages ------
  */
@@ -9,7 +10,7 @@ import (
 )
 
 /*
- * ------ Main Variables, regarding OS and I/O interaction. ------
+ * ------ Variables, regarding OS and I/O interaction. ------
  */ 
 
 var ArgumentParsingError = errors.New("Invalid arguments. See gouss -h for help.")
