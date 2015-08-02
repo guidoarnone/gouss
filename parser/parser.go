@@ -47,9 +47,8 @@ func validateAndRetrieveMatrixDimentions(matrix [][]string) (rows, columns int, 
 		return 0, 0, InvalidMatrixDimentionsError
 	}
 
-	columns = -1
 	for _, row := range matrix {
-		if len(row) != columns && columns != -1 {
+		if len(row) != rows {
 			err = InvalidMatrixDimentionsError
 		}
 		columns = len(row)
