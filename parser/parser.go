@@ -7,6 +7,7 @@ package parser
 import (
  	"errors"
 	"math/big"
+	"gouss/core"
 )
 
 /*
@@ -20,41 +21,6 @@ var InvalidElementSyntaxError = errors.New("One of your numbers has an invalid f
 /*
  * ------ Types and Methods ------
  */
-
-type RationalMatrix [][]big.Rat
-
-/*
- * Parses a rational matrix into a string, for user interaction.
- */
-
-func (matrix *RationalMatrix) String() string {
-	strMatrix := ""
-	for i := 0; i < len(*matrix); i++ {
-		columnLength := len((*matrix)[i])
-		for j:= 0; j < columnLength; j++ {
-			value := (*matrix)[i][j]
-			//if denominator is one, it's removed from the string
-			if big.NewInt(1).Cmp(value.Denom()) == 0 {
-				strMatrix += value.Num().String()
-			} else {
-				strMatrix += value.String()
-			}
-			if j < columnLength -1 {
-				strMatrix += " "
-			}
-		}
-		strMatrix += "\n"
-	}
-	return strMatrix
-}
-
-/*
- * Parses a rational matrix into a byte array, for user interaction.
- */
-
-func (matrix *RationalMatrix) Bytes() []byte {
-	return []byte(matrix.String())
-}
 
 type MatrixElement struct {
 	rowNumber, columnNumber int
@@ -96,7 +62,7 @@ func validateAndRetrieveMatrixDimentions(matrix [][]string) (rows, columns int, 
  * Parses and validates an input matrix of strings into a matrix of rational numbers.
  */
 
-func ParseToRationalMatrix(stringMatrix [][]string) (matrix RationalMatrix, err error) {
+func ParseToRationalMatrix(stringMatrix [][]string) (matrix core.RationalMatrix, err error) {
 	rowLength, columnLength, err := validateAndRetrieveMatrixDimentions(stringMatrix)
 	if err != nil {
 		return matrix, err
@@ -125,7 +91,7 @@ func ParseToRationalMatrix(stringMatrix [][]string) (matrix RationalMatrix, err 
  * Initializes the rational numbers matrix 
  */
 
-func initMatrix(rows, columns int, matrix *RationalMatrix) {
+func initMatrix(rows, columns int, matrix *core.RationalMatrix) {
 	for i := 1; i <= rows; i++ {
 		row := make([]big.Rat, columns)
 		*matrix = append(*matrix, row)
@@ -136,7 +102,7 @@ func initMatrix(rows, columns int, matrix *RationalMatrix) {
  * Saves incoming MatrixElements in a matrix.
  */
 
-func matrixSaver(rows, columns int, matrix *RationalMatrix, ch chan MatrixElementMessage, ok chan bool) {
+func matrixSaver(rows, columns int, matrix *core.RationalMatrix, ch chan MatrixElementMessage, ok chan bool) {
 	var err error
 	for i := 0; i < rows*columns && err == nil; i++ {
 		message := <-ch
