@@ -27,25 +27,29 @@ const helpFilePath = "./.data/help"
  */
 
 func main() {
-	
+
 	helpModeOn, fileConfiguration, err := parser.ParseArguments()
 	exitProcessIfError(err, -1)
 
 	if helpModeOn {
 		showHelp()
 		return
-	} 
+	}
 
 	input, output := resolveFileIO(fileConfiguration)
-	
+
 	//Format input into string matrix
 	stringMatrix := userInputToString(input)
+
 	//Parse string matrix into a rational numbers matrix
 	matrix, err := parser.ParseToRationalMatrix(stringMatrix)
 	exitProcessIfError(err, -1)
-	
-	output.Write(matrix.Bytes())
 
+	//Concurrent Gaussian elimination
+	matrix.Triangulate()
+
+	//Parse and output the triangulated matrix
+	output.Write(matrix.Bytes())
 }
 
 /*
@@ -70,7 +74,7 @@ func showHelp() {
  */
 
 func resolveFileIO(fileConfiguration parser.FileConfig) (input io.Reader, output io.Writer) {
-	
+
 	//Default I/O is Stdin & Stdout
 	input  = os.Stdin
 	output = os.Stdout
@@ -96,12 +100,12 @@ func resolveFileIO(fileConfiguration parser.FileConfig) (input io.Reader, output
  */
 
 func userInputToString(inputReader io.Reader) [][]string {
-	
+
 	//Read the input by lines
 	var err error = nil
 	var lines []string
 	var line string
-	
+
 	reader := bufio.NewReader(inputReader)
 	for err == nil {
 		line, err = reader.ReadString(byte('\n'))
@@ -138,7 +142,7 @@ func splitLine(l string, ch chan []string) {
 	var split []string
 	rawSplit := strings.Split(l, " ")
 	for _, s := range rawSplit {
-		if s[0] != ' ' {
+		if s != "" && s[0] != ' ' {
 			split = append(split, s)
 		}
 	}
@@ -150,7 +154,7 @@ func splitLine(l string, ch chan []string) {
  */
 
 func clearScreen() (err error) {
-	clearCmd := "clear" 
+	clearCmd := "clear"
 	command := exec.Command(clearCmd, "")
 	command.Stdout = os.Stdout
 	err = command.Run()

@@ -9,6 +9,13 @@ import (
 )
 
 /*
+ * ------ Variables ------
+ */
+
+var zero = *big.NewRat(0,1)
+var minusOne = *big.NewRat(-1,1)
+
+/*
  * ------ Types and Methods ------
  */
 
@@ -45,4 +52,16 @@ func (matrix *RationalMatrix) String() string {
 
 func (matrix *RationalMatrix) Bytes() []byte {
 	return []byte(matrix.String())
+}
+
+/*
+ * Functions for rationals.
+ */
+
+func isZero(q big.Rat) bool {
+	return q.Cmp(&zero) == 0
+}
+
+func Minus(q big.Rat) big.Rat {
+	return *q.Mul(&q, &minusOne)
 }

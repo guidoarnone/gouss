@@ -12,7 +12,7 @@ import (
 
 /*
  * ------ Variables ------
- */ 
+ */
 
 var RationalMatrixParseError = errors.New("An error ocurred parsing information to coherent numeric values. Please check your input data.")
 var InvalidMatrixDimentionsError = errors.New("Your input does not correspond to a matrix with vaild dimentions.")
@@ -35,7 +35,7 @@ type MatrixElementMessage struct {
 
 /*
  * ------ Functions ------
- */ 
+ */
 
 /*
  * Returns how many rows and columns the matrix has. An error is returned in case of invalid size.
@@ -47,8 +47,9 @@ func validateAndRetrieveMatrixDimentions(matrix [][]string) (rows, columns int, 
 		return 0, 0, InvalidMatrixDimentionsError
 	}
 
+  columns = -1
 	for _, row := range matrix {
-		if len(row) != rows {
+		if len(row) != columns && columns != -1 {
 			err = InvalidMatrixDimentionsError
 		}
 		columns = len(row)
@@ -66,12 +67,12 @@ func ParseToRationalMatrix(stringMatrix [][]string) (matrix core.RationalMatrix,
 	if err != nil {
 		return matrix, err
 	}
-	
+
 	//Initialize the matrix and the channel
 	ch := make(chan MatrixElementMessage)
 	ok := make(chan bool)
 	initMatrix(rowLength, columnLength, &matrix)
-	go matrixSaver(rowLength, columnLength, &matrix, ch, ok)	
+	go matrixSaver(rowLength, columnLength, &matrix, ch, ok)
 
 	//Concurrent parsing
 	for i := 0; i < rowLength; i++ {
@@ -87,7 +88,7 @@ func ParseToRationalMatrix(stringMatrix [][]string) (matrix core.RationalMatrix,
 }
 
 /*
- * Initializes the rational numbers matrix 
+ * Initializes the rational numbers matrix
  */
 
 func initMatrix(rows, columns int, matrix *core.RationalMatrix) {
@@ -107,7 +108,7 @@ func matrixSaver(rows, columns int, matrix *core.RationalMatrix, ch chan MatrixE
 		message := <-ch
 		element := message.element
 		err = message.err
-		(*matrix)[element.rowNumber][element.columnNumber] = element.value 
+		(*matrix)[element.rowNumber][element.columnNumber] = element.value
 	}
 
 	ok <- (err == nil)
