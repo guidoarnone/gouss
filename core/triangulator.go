@@ -7,7 +7,6 @@ package core
 import (
 	"math"
 	"math/big"
-	"fmt"
 )
 
 /*
@@ -43,8 +42,6 @@ func (matrix *RationalMatrix) Triangulate() {
 				}
 			}
 		}
-		fmt.Println(pivotX, " ", pivotY)
-		fmt.Println(matrix.String())
 	}
 	//Rearrange rows to make the matrix upper triangular
 	//sortByZeroes(matrix)
