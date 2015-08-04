@@ -22,6 +22,31 @@ var minusOne = *big.NewRat(-1,1)
 type RationalMatrix [][]big.Rat
 
 /*
+ * Satisfying the sort.Interface interface, sorting by less zeroes left.
+ */
+
+func (r RationalMatrix) Len() int {
+	return len(r)
+}
+
+func (r RationalMatrix) Less(i, j int) bool {
+	for k := 0; k < len(r[0]); k++ {
+		if !isZero(r[i][k]) && isZero(r[j][k]) {
+			return true
+		} else if isZero(r[i][k]) && !isZero(r[j][k]) {
+			return false
+		}
+	}
+	return true
+}
+
+func (r RationalMatrix) Swap(i, j int) {
+	rowSwap := r[i]
+	r[i] = r[j]
+	r[j] = rowSwap
+}
+
+/*
  * Parses a rational matrix into a string, for user interaction.
  */
 
