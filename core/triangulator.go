@@ -47,7 +47,6 @@ func (matrix *RationalMatrix) Triangulate() {
 	//Rearrange rows to make the matrix upper triangular
 	//Rows with less zeroes left go up, see the implementation of Interface
 	sort.Sort(*matrix)
-	//prettyFormat(matrix) e.g (1/8 2/8 2/8 9/8) row -> (1 2 2 9)
 }
 
 func validPivot(pivotX, pivotY int, matrix *RationalMatrix) bool {
