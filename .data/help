@@ -5,6 +5,19 @@ Gouss is a concurrent matrix triangulator.
 Options:
 
 -h				Displays this information.
--f	[input] [output]	Sets input and output files for Gouss to read 
+-f	[input] [output]	Sets input and output files for Gouss to read
 				from and write to. If the output file is ommited,
 				the default output is stdout.
+
+Examples:
+
+> gouss
+1 2
+5 6
+
+1 2
+0 4/5
+
+> gouss -f input.in output.out
+
+Press enter to exit help mode.
