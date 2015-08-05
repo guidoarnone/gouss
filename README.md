@@ -4,7 +4,7 @@ Gouss is a little script which triangulates matrices, doing row operations **con
 
 #Running gouss
 
-Just copy and build **gouss** in the src folder of you GOPATH.
+Just copy and build **gouss** in the src folder of your GOPATH.
 
 ```bash
 cd $GOPATH/src
